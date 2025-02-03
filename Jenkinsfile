@@ -17,7 +17,7 @@ pipeline {
         sh 'node --version'
       }
     }
-    
+
     stage('Docker maven test') {
       agent {
         docker {
@@ -30,4 +30,55 @@ pipeline {
       }
     }
   }
+  stage('Checkout') {
+              steps {
+                  checkout scm
+              }
+          }
+
+          stage('Build & Test') {
+              steps {
+                  script {
+                      sh 'docker version'
+                      sh 'docker-compose up -d'
+                      sh 'docker-compose down'
+                  }
+              }
+          }
+
+          stage('Build Docker Image') {
+              steps {
+                  script {
+                      sh "docker build -t spring_app ."
+                  }
+              }
+          }
+
+          stage('Push to Nexus Repository') {
+              steps {
+                  script {
+                      withCredentials([usernamePassword(credentialsId: 'nexus_credentials', usernameVariable: 'admin', passwordVariable: 'admin')]) {
+                          sh "echo admin | docker login ${NEXUS_REGISTRY} -u admin --password-stdin"
+                          sh "docker push spring_app"
+                      }
+                  }
+              }
+          }
+
+          stage('Deploy') {
+              steps {
+                  script {
+                      sh 'docker-compose down' // Stop previous containers
+                      sh 'docker-compose up -d' // Start new deployment
+                  }
+              }
+          }
+      }
+
+      post {
+          always {
+              sh 'docker-compose down -v'
+          }
+      }
 }
+
