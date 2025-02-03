@@ -20,7 +20,6 @@ pipeline {
         stage('Build & Test') {
             steps {
                 script {
-                    sh 'mvn clean package'
                     sh 'docker-compose up -d'
                     sh 'mvn verify' // Run integration tests
                     sh 'docker-compose down'
