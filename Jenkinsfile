@@ -34,19 +34,8 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                script {
-                    sh 'docker-compose down' // Stop previous containers
-                    sh 'docker-compose up -d' // Start new deployment
-                }
-            }
-        }
-    }
 
     post {
-        always {
-            sh 'docker-compose down -v'
-        }
+
     }
 }
