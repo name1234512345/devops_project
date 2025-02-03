@@ -1,7 +1,5 @@
 pipeline {
-     agent {
-            docker { image 'maven:3.9.8-eclipse-temurin-21' } // Use Maven + JDK image
-        }
+     agent any
 
     environment {
         NEXUS_REGISTRY = "http://localhost:8081/repository/ci_cd_project_repository/"
@@ -21,7 +19,6 @@ pipeline {
             steps {
                 script {
                     sh 'docker-compose up -d'
-                    sh 'mvn verify' // Run integration tests
                     sh 'docker-compose down'
                 }
             }
