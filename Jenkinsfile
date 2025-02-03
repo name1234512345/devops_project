@@ -10,6 +10,13 @@ pipeline {
     }
 
     stages {
+
+       stage('Check Docker Compose') {
+               steps {
+                   sh 'docker run --rm docker/compose:1.29.2 version'
+               }
+           }
+
         stage('Checkout') {
             steps {
                 checkout scm
