@@ -58,4 +58,5 @@ pipeline {
             sh 'docker-compose down -v'
         }
     }
+    
 }
