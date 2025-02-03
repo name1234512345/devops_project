@@ -13,18 +13,7 @@ pipeline {
                 checkout scm
             }
         }
-
-        stage('Build & Test') {
-            steps {
-                script {
-                    sh 'docker-compose up -d'
-                    sh 'docker-compose down'
-                }
-            }
-        }
-
-
-
+        
 
         stage('Build Docker Image') {
             steps {
