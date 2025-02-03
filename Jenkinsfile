@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Check Docker') {
             steps {
-                sh 'docker --version'     // Test Docker access
+                sh 'docker --version'     
                 sh 'docker ps'            // List running containers
             }
         }
