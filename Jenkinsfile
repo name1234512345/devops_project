@@ -1,16 +1,15 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.6-openjdk-11'
-            args '--user root'
-        }
-    }
+    agent any
 
     stages {
-        stage('Check Docker') {
+        stage('Check Docker Installation') {
             steps {
-                sh 'docker --version'     
-                sh 'docker ps'            // List running containers
+                script {
+                    echo "Checking Docker version..."
+                }
+                sh 'docker --version'  // Check Docker version
+                sh 'docker info'       // Get detailed Docker info
+                sh 'docker ps'         // List running Docker containers
             }
         }
     }
