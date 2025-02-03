@@ -10,6 +10,7 @@ pipeline {
                 sh 'docker --version'  // Check Docker version
                 sh 'docker info'       // Get detailed Docker info
                 sh 'docker ps'         // List running Docker containers
+        
             }
         }
     }
