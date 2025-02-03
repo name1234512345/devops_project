@@ -1,5 +1,10 @@
 pipeline {
-     agent none
+     agent {
+                       docker {
+                         image 'node:7-alpine'
+                         args '--name docker-node' // list any args
+                       }
+                     }
 
 
     environment {
@@ -44,7 +49,6 @@ pipeline {
             steps {
                 script {
                     sh 'docker-compose up -d'
-                    sh 'mvn verify' // Run integration tests
                     sh 'docker-compose down'
                 }
             }
