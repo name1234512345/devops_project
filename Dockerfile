@@ -1,7 +1,7 @@
 FROM maven:3.9.8-eclipse-temurin-21 AS build
 WORKDIR /tmp
-COPY pom.xml .
-COPY src ./src
+COPY service2/pom.xml .
+COPY service2/src ./src
 RUN mvn clean package -DskipTests
 RUN ls -l /tmp
 FROM openjdk:21-jdk-slim
