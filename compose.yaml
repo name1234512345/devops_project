@@ -1,2 +1,28 @@
+version: "3.8"
+
+networks:
+  microservices_network:
+
 services:
-version: 0
+  service-1:
+    build: ./service1
+    container_name: service1
+    environment:
+      SERVER_PORT: 8088
+      SERVICE_B_URL: http://service2:8089
+    depends_on:
+      - service2
+    ports:
+      - "8088:8088"
+    networks:
+      - microservices_network
+
+  service2:
+    build: ./service2
+    container_name: service2
+    environment:
+      SERVER_PORT: 8089
+    ports:
+      - "8089:8089"
+    networks:
+      - microservices_network
