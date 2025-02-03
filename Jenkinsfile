@@ -1,7 +1,5 @@
 pipeline {
-     agent {
-            docker { image 'maven:3.8.6-openjdk-11' } // Use Maven + JDK image
-        }
+     agent any
 
     environment {
         NEXUS_REGISTRY = "http://localhost:8081/repository/ci_cd_project_repository/"
