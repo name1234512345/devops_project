@@ -11,13 +11,6 @@ pipeline {
 
     stages {
 
-      stage('Check Docker') {
-                steps {
-                    sh 'docker --version'
-                    sh 'docker ps'
-                }
-            }
-
         stage('Checkout') {
             steps {
                 checkout scm
