@@ -4,7 +4,7 @@ pipeline {
     environment {
           imageName = "spring_app"
           registryCredentials = "nexus"
-          registry = "http://host.docker.internal:8081/repository/ci_cd_project_repository/"
+          registry = "host.docker.internal:8081"
           dockerImage = ''
       }
 
@@ -29,7 +29,7 @@ pipeline {
                stage('Uploading to Nexus') {
                 steps{
                     script {
-                        docker.withRegistry( registry, registryCredentials ) {
+                        docker.withRegistry( 'http://'+registry, registryCredentials ) {
                         dockerImage.push('latest')
                      }
                    }
