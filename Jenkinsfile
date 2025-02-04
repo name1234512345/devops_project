@@ -1,38 +1,55 @@
 pipeline {
+
     agent any
 
     environment {
-        NEXUS_REGISTRY = "http://localhost:8081/repository/ci_cd_project_repository/"
-        IMAGE_NAME = "${NEXUS_REGISTRY}/spring-boot-app:latest"
-        COMPOSE_FILE = "docker-compose.yaml"
+        imageName = "spring_app"
+        registryCredentials = "nexus_credentials"
+        registry = "http://localhost:8081/repository/ci_cd_project_repository/"
+        dockerImage = ''
     }
 
     stages {
-        stage('Checkout') {
+        stage('Code checkout') {
             steps {
-                checkout scm
-            }
+                            checkout scm
+
         }
 
-
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh "docker build -t spring_app ."
-                }
-            }
+    // Building Docker images
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build imageName
         }
+      }
+    }
 
-        stage('Push to Nexus Repository') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'nexus_credentials', usernameVariable: 'admin', passwordVariable: 'admin')]) {
-                        sh "echo admin | docker login ${NEXUS_REGISTRY} -u admin --password-stdin"
-                        sh "docker push spring_app"
-                    }
-                }
-            }
+    // Uploading Docker images into Nexus Registry
+    stage('Uploading to Nexus') {
+     steps{
+         script {
+             docker.withRegistry( registry, registryCredentials ) {
+             dockerImage.push('latest')
+          }
         }
+      }
+    }
+
+    // Stopping Docker containers for cleaner Docker run
+    stage('stop previous containers') {
+         steps {
+            sh 'docker ps -f name=myphpcontainer -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -fname=myphpcontainer -q | xargs -r docker container rm'
+         }
+       }
+
+    stage('Docker Run') {
+       steps{
+         script {
+                sh 'docker run -d -p 80:80 --rm --name myphpcontainer ' + registry + imageName
+            }
+         }
+      }
     }
 }
