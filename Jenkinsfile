@@ -4,7 +4,7 @@ pipeline {
     environment {
           imageName = "spring_app"
           registryCredentials = "nexus"
-          registry = "http://172.21.160.1:8081/repository/repo/"
+          registry = "http://host.docker.internal:8081/repository/repo/"
           dockerImage = ''
       }
 
