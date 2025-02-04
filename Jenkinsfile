@@ -3,17 +3,16 @@ pipeline {
     agent any
 
     environment {
-        imageName = "spring_app"
-        registryCredentials = "nexus_credentials"
-        registry = "http://localhost:8081/repository/ci_cd_project_repository/"
+        imageName = "myphpapp"
+        registryCredentials = "nexus"
+        registry = "ec2-13-58-223-172.us-east-2.compute.amazonaws.com:8085"
         dockerImage = ''
     }
 
     stages {
         stage('Code checkout') {
             steps {
-                            checkout scm
-
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://bitbucket.org/ananthkannan/phprepo/']]])                   }
         }
 
     // Building Docker images
@@ -29,7 +28,7 @@ pipeline {
     stage('Uploading to Nexus') {
      steps{
          script {
-             docker.withRegistry( registry, registryCredentials ) {
+             docker.withRegistry( 'http://'+registry, registryCredentials ) {
              dockerImage.push('latest')
           }
         }
@@ -44,13 +43,11 @@ pipeline {
          }
        }
 
-       
-
     stage('Docker Run') {
        steps{
          script {
                 sh 'docker run -d -p 80:80 --rm --name myphpcontainer ' + registry + imageName
-            }
+
          }
       }
     }
