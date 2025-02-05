@@ -4,9 +4,9 @@ pipeline {
     environment {
           imageName = "spring_app"
           DOCKER_CREDENTIALS_ID = "nexus"
-          registry = "http://nexus-nexus-1:8081/repository/ci_cd_repository/"
+          registry = "https://83f0-31-11-111-199.ngrok-free.app/repository/ci_cd_repository/"
           dockerImage = ''
-          NEXUS_URL = 'http://nexus-nexus-1:8085'
+          NEXUS_URL = 'https://83f0-31-11-111-199.ngrok-free.app'
           NEXUS_REPO = 'ci_cd_repository'
 
       }
