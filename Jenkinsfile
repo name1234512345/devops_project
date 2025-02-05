@@ -6,7 +6,7 @@ pipeline {
           DOCKER_CREDENTIALS_ID = "nexus"
           registry = "http://nexus-nexus-1:8081/repository/ci_cd_repository/"
           dockerImage = ''
-          NEXUS_URL = 'http://nexus-nexus-1:8081'
+          NEXUS_URL = 'http://nexus-nexus-1:8085'
           NEXUS_REPO = 'ci_cd_repository'
 
       }
@@ -33,7 +33,7 @@ pipeline {
                        steps {
                            script {
                                withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
-                                                   sh "docker login -u ${NEXUS_USER} -p ${NEXUS_PASS} http://nexus-nexus-1:8081"
+                                                   sh "docker login -u ${NEXUS_USER} -p ${NEXUS_PASS} http://nexus-nexus-1:8085"
                                }
                            }
                        }
