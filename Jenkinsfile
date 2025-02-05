@@ -32,8 +32,8 @@ pipeline {
                  stage('Login to Nexus') {
                        steps {
                            script {
-                               withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'admin', passwordVariable: 'admin')]) {
-                                   sh "docker login -u admin -p admin ${NEXUS_URL}"
+                               withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                                   sh "docker login ${NEXUS_USER} -p ${NEXUS_PASS} ${NEXUS_URL}"
                                }
                            }
                        }
