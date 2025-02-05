@@ -42,7 +42,7 @@ pipeline {
                    stage('Push Image to Nexus') {
                        steps {
                            script {
-                               sh "docker push ${NEXUS_URL}/${IMAGE_NAME}:latest"
+                               sh "docker push ${NEXUS_URL}/ci_cd_repository/${IMAGE_NAME}:latest"
                            }
                        }
                    }
