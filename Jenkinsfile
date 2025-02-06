@@ -55,7 +55,7 @@ pipeline {
                         script {
                             docker.image('maven:3.8.4-openjdk-11').inside {
                                 // Run Maven clean and test phases (this will run unit tests)
-                                sh 'mvn clean test'
+                                sh 'mvn test'
                             }
                         }
                     }
