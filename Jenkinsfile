@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-          IMAGE_NAME = "spring_app"
+          IMAGE_NAME = "ci_cd_repository"
           DOCKER_CREDENTIALS_ID = "nexus"
           registry = "https://83f0-31-11-111-199.ngrok-free.app/repository/ci_cd_repository/"
           dockerImage = ''
