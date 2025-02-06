@@ -31,11 +31,7 @@ pipeline {
              }
            }
 
-              stage('Tag Docker Image') {
-                       steps {
-                           sh 'docker tag $IMAGE_NAME:$IMAGE_TAG $NEXUS_URL/$NEXUS_REPO/$IMAGE_NAME:$IMAGE_TAG'
-                       }
-                   }
+
 
                  stage('Login to Nexus') {
                        steps {
@@ -50,7 +46,7 @@ pipeline {
                    stage('Push Image to Nexus') {
                        steps {
                            script {
-                               sh 'docker push $NEXUS_URL/$NEXUS_REPO/$IMAGE_NAME:$IMAGE_TAG'
+                               docker.image("${NEXUS_URL}/${IMAGE_NAME}:${IMAGE_TAG}").push()
                            }
                        }
                    }
