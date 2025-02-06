@@ -53,7 +53,7 @@ pipeline {
                     steps {
                         // Use a Docker Maven container to run the tests
                         script {
-                            docker.image('maven:3.8.4-openjdk-11').inside {
+                            docker.image('maven:3.9.8-eclipse-temurin-21').inside {
                                 // Run Maven clean and test phases (this will run unit tests)
                                 sh 'mvn clean integration-test'
                             }
