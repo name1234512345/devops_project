@@ -3,7 +3,7 @@ pipeline {
 
     environment {
           IMAGE_NAME = "ci_cd"
-          DOCKER_CREDENTIALS_ID = "docker_hub_credentials"
+          DOCKER_CREDENTIALS_ID = "docker_hub_secret_text"
           registry = "https://e487-31-11-101-213.ngrok-free.app/repository/ci_cd_repository/"
           dockerImage = ''
           NEXUS_URL = 'https://e487-31-11-101-213.ngrok-free.app'
