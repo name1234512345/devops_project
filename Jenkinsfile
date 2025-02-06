@@ -26,7 +26,7 @@ pipeline {
 
          stage('Run Maven Tests') {
                     agent {
-                        maven 'Maven 3.8.4'  
+                        maven 'Maven 3.8.4'
                     }
                     steps {
                         sh 'mvn clean test'
