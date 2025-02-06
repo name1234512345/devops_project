@@ -7,6 +7,7 @@ pipeline {
           registry = "https://83f0-31-11-111-199.ngrok-free.app/repository/ci_cd_repository/"
           dockerImage = ''
           NEXUS_URL = 'https://83f0-31-11-111-199.ngrok-free.app'
+          NEXUS_URL1 = '83f0-31-11-111-199.ngrok-free.app'
           NEXUS_REPO = 'ci_cd_repository'
           IMAGE_TAG = "latest"
 
@@ -31,7 +32,11 @@ pipeline {
              }
            }
 
-
+              stage('Tag Docker Image') {
+                       steps {
+                           sh 'docker tag $IMAGE_NAME:$IMAGE_TAG $NEXUS_URL1/$NEXUS_REPO/$IMAGE_NAME:$IMAGE_TAG'
+                       }
+                   }
 
                  stage('Login to Nexus') {
                        steps {
@@ -46,7 +51,7 @@ pipeline {
                    stage('Push Image to Nexus') {
                        steps {
                            script {
-                               docker.image("${NEXUS_URL}/${IMAGE_NAME}:${IMAGE_TAG}").push()
+                               sh 'docker push $NEXUS_URL1/$NEXUS_REPO/$IMAGE_NAME:$IMAGE_TAG'
                            }
                        }
                    }
