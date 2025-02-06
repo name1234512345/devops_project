@@ -57,6 +57,14 @@ pipeline {
             }
         }
 
+         stage('Check Container Logs') {
+                    steps {
+                        script {
+                            sh 'docker logs service1'
+                        }
+                    }
+                }
+
           stage('Check Running Containers') {
                     steps {
                         script {
