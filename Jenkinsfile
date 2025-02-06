@@ -49,16 +49,6 @@ pipeline {
             }
         }
 
-                stage('Run Maven Tests') {
-                    steps {
-                        // Use a Docker Maven container to run the tests
-                        script {
-                           sh "docker exec service1 mvn test"
-
-                        }
-                    }
-                }
-
         stage('Deploy and Start Containers') {
             steps {
                 script {
@@ -66,6 +56,16 @@ pipeline {
                 }
             }
         }
+
+            stage('Run Maven Tests') {
+                            steps {
+                                // Use a Docker Maven container to run the tests
+                                script {
+                                   sh "docker exec service1 mvn test"
+
+                                }
+                            }
+                        }
     }
 
 
