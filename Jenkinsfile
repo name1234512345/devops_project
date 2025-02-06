@@ -27,7 +27,7 @@ pipeline {
            stage('Building image') {
              steps{
                script {
-                 dockerImage = docker.build IMAGE_NAME
+                   docker.build("${NEXUS_URL1}/${IMAGE_NAME}:${IMAGE_TAG}")
                }
              }
            }
