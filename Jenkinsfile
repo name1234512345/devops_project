@@ -45,7 +45,7 @@ pipeline {
                   stage('Push to Docker Hub') {
                       steps {
                           script {
-                              sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                              sh "docker push kateilievsk123/devops_app:latest"
                           }
                       }
                   }
