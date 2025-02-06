@@ -96,6 +96,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<mainClass>com.example.service1.Service1Application</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -104,6 +105,19 @@
 					</excludes>
 				</configuration>
 			</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<archive>
+							<index>true</index>
+							<manifest>
+								<mainClass>com.example.service1.Service1Application</mainClass>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
 		</plugins>
 	</build>
 
