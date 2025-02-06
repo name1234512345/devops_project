@@ -31,24 +31,16 @@ pipeline {
                }
              }
            }
+stage('Push Docker Image to Nexus') {
+steps {
+script {
+docker.withRegistry("https://${NEXUS_URL1}",
+'nexus') {
+docker.image("${NEXUS_URL1}/${IMAGE_NAME}:${IMAGE_TAG}").push()
+}
+}
+}
+}
 
-
-                 stage('Login to Nexus') {
-                       steps {
-                           script {
-                               withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
-                                                   sh "docker login -u ${NEXUS_USER} -p ${NEXUS_PASS} ${NEXUS_URL}"
-                               }
-                           }
-                       }
-                   }
-
-                   stage('Push Image to Nexus') {
-                       steps {
-                           script {
-                               docker.image("${NEXUS_URL1}/${IMAGE_NAME}:${IMAGE_TAG}").push()
-                           }
-                       }
-                   }
 }
 }
