@@ -49,6 +49,18 @@ pipeline {
             }
         }
 
+                stage('Run Maven Tests') {
+                    steps {
+                        // Use a Docker Maven container to run the tests
+                        script {
+                            docker.image('maven:3.8.4-openjdk-11').inside {
+                                // Run Maven clean and test phases (this will run unit tests)
+                                sh 'mvn clean test'
+                            }
+                        }
+                    }
+                }
+
         stage('Deploy and Start Containers') {
             steps {
                 script {
@@ -58,17 +70,7 @@ pipeline {
         }
     }
 
-            stage('Run Maven Tests') {
-                steps {
-                    // Use a Docker Maven container to run the tests
-                    script {
-                        docker.image('maven:3.8.4-openjdk-11').inside {
-                            // Run Maven clean and test phases (this will run unit tests)
-                            sh 'mvn clean test'
-                        }
-                    }
-                }
-            }
+
 
     post {
         always {
