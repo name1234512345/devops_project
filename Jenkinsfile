@@ -26,12 +26,13 @@ pipeline {
 
          stage('Run Maven Tests') {
                     docker {
-                               image 'maven:3.8.4-openjdk-11'  
+                               image 'maven:3.8.4-openjdk-11'
                            }
                     steps {
                         sh 'mvn clean test'
                     }
                 }
+                
 
         stage('Login to Docker Hub') {
             steps {
