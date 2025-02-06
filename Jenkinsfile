@@ -57,6 +57,14 @@ pipeline {
             }
         }
 
+          stage('Check Running Containers') {
+                    steps {
+                        script {
+                            sh 'docker ps'
+                        }
+                    }
+                }
+
             stage('Run Maven Tests') {
                             steps {
                                 // Use a Docker Maven container to run the tests
