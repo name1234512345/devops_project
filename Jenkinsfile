@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     environment {
-          IMAGE_NAME = "ci_cd_repository"
+          IMAGE_NAME = "ci_cd"
           DOCKER_CREDENTIALS_ID = "nexus"
-          registry = "https://83f0-31-11-111-199.ngrok-free.app/repository/ci_cd_repository/"
+          registry = "https://e487-31-11-101-213.ngrok-free.app/repository/ci_cd_repository/"
           dockerImage = ''
-          NEXUS_URL = 'https://83f0-31-11-111-199.ngrok-free.app'
-          NEXUS_URL1 = '83f0-31-11-111-199.ngrok-free.app'
-          NEXUS_REPO = 'ci_cd_repository'
+          NEXUS_URL = 'https://e487-31-11-101-213.ngrok-free.app'
+          NEXUS_URL1 = 'e487-31-11-101-213.ngrok-free.app'
+          NEXUS_REPO = 'ci_cd'
           IMAGE_TAG = "latest"
 
 
@@ -35,7 +35,7 @@ stage('Push Docker Image to Nexus') {
 steps {
 script {
 docker.withRegistry("https://${NEXUS_URL1}",
-'nexus') {
+'nexus_credentials') {
 docker.image("${NEXUS_URL1}/${IMAGE_NAME}:${IMAGE_TAG}").push()
 }
 }
