@@ -6,6 +6,7 @@ pipeline {
         DOCKERHUB_REPO = 'kateilievsk123'
         IMAGE_TAG = 'latest'
         DOCKER_CREDENTIALS_ID = 'docker_hub_secret_text'
+        PROJECT_DIR = "${WORKSPACE}"
     }
 
     stages {
@@ -76,7 +77,7 @@ pipeline {
                             steps {
                                 // Use a Docker Maven container to run the tests
                                 script {
-                                   sh "docker exec service1 mvn test"
+                                   sh "docker exec -v $PROJECT_DIR:/tmp -w /tmp service1 mvn test"
                                 }
                             }
                         }
