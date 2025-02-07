@@ -77,8 +77,7 @@ pipeline {
                             steps {
                                 // Use a Docker Maven container to run the tests
                                 script {
-                                   sh "docker run --rm maven:latest mvn test"
-
+                                   sh "docker exec service1 mvn test"
                                 }
                             }
                         }
