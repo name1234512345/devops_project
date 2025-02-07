@@ -77,10 +77,8 @@ pipeline {
                             steps {
                                 // Use a Docker Maven container to run the tests
                                 script {
-                                   sh "      docker run --rm \
-                                                               -v $PROJECT_DIR:/tmp \  # Mount project directory
-                                                               -w /tmp \  # Set working directory inside container
-                                                               maven:3.9.8-eclipse-temurin-21 mvn test"
+                                   sh "docker run --rm -v $PROJECT_DIR:/tmp -w /tmp  maven:3.9.8-eclipse-temurin-21 mvn test"
+
                                 }
                             }
                         }
