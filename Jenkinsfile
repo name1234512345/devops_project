@@ -43,6 +43,7 @@ pipeline {
                     for (service in services) {
                         sh """
                         docker tag ${service}:latest ${DOCKERHUB_REPO}/${service}:${IMAGE_TAG}
+                        docker push ${DOCKERHUB_REPO}/${service}:${IMAGE_TAG}
                         """
                     }
                 }
