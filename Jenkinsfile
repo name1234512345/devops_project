@@ -78,7 +78,6 @@ pipeline {
                                 // Use a Docker Maven container to run the tests
                                 script {
                                    sh "docker run --rm -v /var/jenkins_home/workspace/ci_cd_project:/tmp -w /tmp maven:3.9.8-eclipse-temurin-21 mvn test"
-"
                                 }
                             }
                         }
