@@ -7,5 +7,5 @@ RUN ls -l /tmp
 FROM openjdk:21-jdk-slim
 WORKDIR /tmp
 COPY --from=build /tmp/target/*.jar service1_application.jar
-ENTRYPOINT ["java","-jar","service1_application.jar"] CMD ["-start"]
-EXPOSE 8080
+ENTRYPOINT ["java","-jar","service1_application.jar"] 
+EXPOSE 9090
