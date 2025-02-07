@@ -13,8 +13,6 @@ services:
     environment:
       SERVER_PORT: 9090
       SERVICE_B_URL: http://service2:9091
-    depends_on:
-      - service2
     ports:
       - "9090:9090"
     networks:
