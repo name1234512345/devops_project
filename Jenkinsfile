@@ -77,7 +77,7 @@ pipeline {
                             steps {
                                 // Use a Docker Maven container to run the tests
                                 script {
-                                   sh "docker exec -v $PROJECT_DIR:/tmp -w /tmp service1 mvn test"
+                                   sh "docker exec -w /tmp service1 mvn test"
                                 }
                             }
                         }
