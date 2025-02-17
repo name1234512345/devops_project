@@ -9,6 +9,7 @@ pipeline {
         PROJECT_DIR = "${WORKSPACE}"
     }
 
+
     stages {
         stage('Checkout Code') {
             steps {
