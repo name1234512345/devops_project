@@ -29,7 +29,7 @@ pipeline {
           stage('Check Docker compose') {
                     steps {
                         script {
-                            sh 'docker-compose --version'
+                            sh 'docker compose --version'
                         }
                     }
                 }
@@ -38,7 +38,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh 'docker-compose build'
+                    sh 'docker compose build'
                 }
             }
         }
@@ -70,7 +70,7 @@ pipeline {
         stage('Deploy and Start Containers') {
             steps {
                 script {
-                    sh "docker-compose up -d"
+                    sh "docker compose up -d"
                 }
             }
         }
@@ -106,7 +106,7 @@ pipeline {
     post {
         always {
             script {
-                sh "docker-compose down"
+                sh "docker compose down"
             }
         }
     }
