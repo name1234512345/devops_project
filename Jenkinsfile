@@ -26,6 +26,14 @@ pipeline {
             }
         }
 
+          stage('Check Docker compose') {
+                    steps {
+                        script {
+                            sh 'docker-compose --version'
+                        }
+                    }
+                }
+
 
         stage('Build Docker Images') {
             steps {
