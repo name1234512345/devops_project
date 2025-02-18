@@ -7,6 +7,7 @@ pipeline {
         IMAGE_TAG = 'latest'
         DOCKER_CREDENTIALS_ID = 'dockerhub'
         PROJECT_DIR = "${WORKSPACE}"
+        KUBE_NAMESPACE = "default"
     }
 
 
@@ -100,6 +101,20 @@ pipeline {
                                 }
                             }
                         }
+
+                          stage('Deploy to Kubernetes') {
+                                 steps {
+                                     sh 'kubectl apply -f k8s/deployment.yaml'
+                                     sh 'kubectl apply -f k8s/service.yaml'
+                                 }
+                             }
+
+                             stage('Verify Deployment') {
+                                 steps {
+                                     sh 'kubectl get pods -n $KUBE_NAMESPACE'
+                                     sh 'kubectl get svc -n $KUBE_NAMESPACE'
+                                 }
+                             }
     }
 
 
