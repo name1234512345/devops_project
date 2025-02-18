@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+  agent { label 'jnlp' }
 
     environment {
         DOCKERHUB_USERNAME = 'kateilievsk123'
