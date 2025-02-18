@@ -1,5 +1,29 @@
 pipeline {
-  agent { label 'jnlp' }
+    agent {
+        kubernetes {
+            label 'jnlp'  // Label for the pod template
+            yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: kubernetes-deploy
+spec:
+  containers:
+  - name: kubectl
+    image: bitnami/kubectl:latest  // Use a kubectl container image
+    command:
+    - cat
+    tty: true
+  - name: docker
+    image: docker:19.03.12  // Use Docker container for building the image
+    command:
+    - cat
+    tty: true
+'''
+        }
+    }
+
 
     environment {
         DOCKERHUB_USERNAME = 'kateilievsk123'
