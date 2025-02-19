@@ -1,18 +1,18 @@
 pipeline {
      agent {
          kubernetes {
-             label 'my-pod-label'
-             defaultContainer 'jnlp1'
+             label 'jnlp'
+             defaultContainer 'jnlp'
              yaml '''
                  apiVersion: v1
                  kind: Pod
                  metadata:
                    name: my-pod
                    labels:
-                     my-label: my-pod-label
+                     my-label: jnlp
                  spec:
                    containers:
-                     - name: jnlp1
+                     - name: jnlp
                        image: jenkins/inbound-agent:latest
                        args: ['$(JENKINS_SECRET)', '$(JENKINS_NAME)', '$(JENKINS_URL)']
                      - name: docker
