@@ -140,5 +140,15 @@ pipeline {
                                      sh 'kubectl get svc -n $KUBE_NAMESPACE'
                                  }
                              }
+
+                             stage('Post Deployment') {
+                                                              steps {
+                sh "docker compose down"
+                                                              }
+                                                          }
     }
+
+
+
+
 }
