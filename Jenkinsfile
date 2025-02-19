@@ -1,7 +1,7 @@
 pipeline {
      agent {
          kubernetes {
-             label 'jnlp'
+             label 'my-pod-label'
              defaultContainer 'jnlp'
              yaml '''
                  apiVersion: v1
@@ -9,7 +9,7 @@ pipeline {
                  metadata:
                    name: my-pod
                    labels:
-                     my-label: jnlp
+                     my-label: my-pod-label
                  spec:
                    containers:
                      - name: jnlp
