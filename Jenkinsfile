@@ -38,7 +38,7 @@ pipeline {
         KUBE_NAMESPACE = "default"
     }
 
-    stages {
+    node(POD_LABEL) {
         stage('Checkout Code') {
             steps {
                 checkout scm
