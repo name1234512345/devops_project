@@ -141,16 +141,4 @@ pipeline {
                                  }
                              }
     }
-
-
-
-    post {
-        always {
-        container(docker){
-            script {
-                sh "docker compose down"
-            }
-        }
-        }
-    }
 }
