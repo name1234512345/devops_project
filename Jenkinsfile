@@ -10,8 +10,6 @@ pipeline {
         KUBE_NAMESPACE = "default"
     }
 
-
-
     stages {
         stage('Checkout Code') {
             steps {
