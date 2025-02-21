@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent {label "docker-agent"}
 
     environment {
         DOCKERHUB_USERNAME = 'kateilievsk123'
@@ -98,7 +98,8 @@ pipeline {
                                  steps {
                                      sh 'kubectl apply -f k8s/service1-deployment.yaml --validate=false'
                                      sh 'kubectl apply -f k8s/service1.yaml --validate=false'
-
+                                     sh 'kubectl apply -f k8s/service1-deployment.yaml --validate=false'
+                                     sh 'kubectl apply -f k8s/service1.yaml --validate=false'
                                  }
                              }
 
