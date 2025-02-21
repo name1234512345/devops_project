@@ -94,6 +94,7 @@ pipeline {
 
 
                           stage('Deploy to Kubernetes') {
+                          agent {kubernetes {label "jnlp"}}
                                  steps {
                                      sh 'kubectl apply -f k8s/service1-deployment.yaml --validate=false'
                                      sh 'kubectl apply -f k8s/service1.yaml --validate=false'
