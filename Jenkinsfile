@@ -1,5 +1,5 @@
 pipeline {
-  agent {label "docker-agent"}
+  agent {label any}
 
     environment {
         DOCKERHUB_USERNAME = 'kateilievsk123'
@@ -94,7 +94,26 @@ pipeline {
 
 
                           stage('Deploy to Kubernetes') {
-                            agent {label "jenkins-agent"}
+                               agent {
+                                            kubernetes {
+                                                label 'k8s-agent'  // Assign a label to the Kubernetes agent
+                                                yaml """
+                            apiVersion: v1
+                            kind: Pod
+                            metadata:
+                              labels:
+                                jenkins-agent: 'k8s-agent'
+                            spec:
+                              containers:
+                              - name: jnlp
+                                image: jenkins/inbound-agent
+                                args: ['$(JENKINS_SECRET)', '$(JENKINS_NAME)']
+                              - name: kubectl
+                                image: bitnami/kubectl
+                                command:
+                                - cat
+                                tty: true
+                            """
                                  steps {
                                      sh 'kubectl apply -f k8s/service1-deployment.yaml --validate=false'
                                      sh 'kubectl apply -f k8s/service1.yaml --validate=false'
