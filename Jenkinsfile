@@ -109,10 +109,6 @@ pipeline {
                              - name: jnlp
                                image: jenkins/inbound-agent:latest
                                args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
-                               envVars {
-                                                   JENKINS_SECRET = credentials('jenkins-kubernetes')
-                                                   JENKINS_NAME = 'jenkins-node-1'
-                                               }
                              - name: kubectl
                                image: bitnami/kubectl:latest
                                command:
