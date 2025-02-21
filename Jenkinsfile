@@ -1,5 +1,5 @@
 pipeline {
-  agent {label any}
+  agent any
 
     environment {
         DOCKERHUB_USERNAME = 'kateilievsk123'
@@ -94,29 +94,35 @@ pipeline {
 
 
                           stage('Deploy to Kubernetes') {
-                              agent {
-                                                                       kubernetes {
-                                                                           label 'k8s-agent'  // This label should correspond to your Kubernetes agent label in Jenkins
-                                                                           defaultContainer 'jnlp'  // This is the default container that Jenkins uses to communicate with the master
-                                                                           yaml """
-                                                       apiVersion: v1
-                                                       kind: Pod
-                                                       metadata:
-                                                         labels:
-                                                           app: my-app
-                                                       spec:
-                                                         containers:
-                                                           - name: jnlp
-                                                             image: jenkins/inbound-agent:latest
-                                                             args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
-                                                           - name: kubectl
-                                                             image: bitnami/kubectl:latest
-                                                             command:
-                                                               - cat
-                                                             tty: true
-                                                       """
-                                                                       }
-                                                                   }
+                            agent {
+                                         kubernetes {
+                                             label 'k8s-agent'  // This label should correspond to your Kubernetes agent label in Jenkins
+                                             defaultContainer 'jnlp'  // This is the default container that Jenkins uses to communicate with the master
+                                             yaml """
+                         apiVersion: v1
+                         kind: Pod
+                         metadata:
+                           labels:
+                             app: my-app
+                         spec:
+                           containers:
+                             - name: jnlp
+                               image: jenkins/inbound-agent:latest
+                               args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
+                             - name: kubectl
+                               image: bitnami/kubectl:latest
+                               command:
+                                 - cat
+                               tty: true
+                         """
+                                         }
+                                     }
+                                 steps {
+                                     sh 'kubectl apply -f k8s/service1-deployment.yaml --validate=false'
+                                     sh 'kubectl apply -f k8s/service1.yaml --validate=false'
+                                 }
+                             }
+
                              stage('Verify Deployment') {
                                  steps {
                                      sh 'kubectl get pods -n $KUBE_NAMESPACE'
