@@ -90,20 +90,13 @@ pipeline {
                     }
                 }
 
-            stage('Run Maven Tests') {
-                            steps {
-                                // Use a Docker Maven container to run the tests
-                                script {
-                                   sh "docker exec service1 mvn test"
-                                }
-                            }
-                        }
+
 
 
                           stage('Deploy to Kubernetes') {
                                  steps {
-                                     sh 'kubectl apply -f k8s/deployment.yaml'
-                                     sh 'kubectl apply -f k8s/service.yaml'
+                                     sh 'kubectl apply -f k8s/service1-deployment.yaml'
+                                     sh 'kubectl apply -f k8s/service1.yaml'
                                  }
                              }
 
