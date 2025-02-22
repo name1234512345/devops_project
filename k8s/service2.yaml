@@ -8,5 +8,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      nodePort: 9092
+      nodePort: 30008
   type: NodePort
