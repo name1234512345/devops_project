@@ -1,18 +1,13 @@
 pipeline {
-  agent any
+    agent any
 
     environment {
         DOCKERHUB_USERNAME = 'kateilievsk123'
         DOCKERHUB_REPO = 'kateilievsk123'
         IMAGE_TAG = 'latest'
-        DOCKER_CREDENTIALS_ID = 'dockerhub'
+        DOCKER_CREDENTIALS_ID = 'docker_hub_secret_text'
         PROJECT_DIR = "${WORKSPACE}"
-        KUBE_NAMESPACE = "default"
         KUBECONFIG = credentials('kubernetes-secret')
-            DOCKER_HOST = sh(script: "minikube docker-env --shell=bash | grep DOCKER_HOST | cut -d '=' -f 2 | tr -d '\"'", returnStdout: true).trim()
-            DOCKER_TLS_VERIFY = sh(script: "minikube docker-env --shell=bash | grep DOCKER_TLS_VERIFY | cut -d '=' -f 2 | tr -d '\"'", returnStdout: true).trim()
-            DOCKER_CERT_PATH = sh(script: "minikube docker-env --shell=bash | grep DOCKER_CERT_PATH | cut -d '=' -f 2 | tr -d '\"'", returnStdout: true).trim()
-
     }
 
     stages {
@@ -22,44 +17,90 @@ pipeline {
             }
         }
 
-  stage('Check Docker') {
+
+        stage('Build Docker Images') {
             steps {
                 script {
-                    sh 'docker --version'
+                    sh 'docker-compose build'
                 }
             }
         }
 
-          stage('Check Docker compose') {
+
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                     withCredentials([string(credentialsId: DOCKER_CREDENTIALS_ID, variable: 'DOCKER_PASSWORD')]) {
+                                                      sh "echo $DOCKER_PASSWORD | docker login -u kateilievsk123 -p ******************"
+                                                  }
+                }
+            }
+        }
+
+        stage('Tag and Push Docker Images') {
+            steps {
+                script {
+                    def services = ['service1', 'service2'] // List services from docker-compose.yml
+                    for (service in services) {
+                        sh """
+                        docker tag ${service}:latest ${DOCKERHUB_REPO}/${service}:${IMAGE_TAG}
+                        docker push ${DOCKERHUB_REPO}/${service}:${IMAGE_TAG}
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to docker  and Start Containers') {
+            steps {
+                script {
+                    sh "docker-compose up -d"
+                }
+            }
+        }
+
+         stage('Check Container Logs') {
                     steps {
                         script {
-                            sh 'docker compose --version'
+                            sh 'docker logs service1'
                         }
                     }
                 }
 
+          stage('Check Running Containers') {
+                    steps {
+                        script {
+                            sh 'docker ps'
+                        }
+                    }
+                }
+
+            stage('Run Maven Tests') {
+                            steps {
+
+                                script {
+                                   sh "docker exec service1 mvn test"
+                                }
+                            }
+                        }
+stage('Deploy to Kubernetes') {
+
+       steps {
+           sh 'kubectl apply -f k8s/service1-deployment.yaml --validate=false'
+           sh 'kubectl apply -f k8s/service1.yaml --validate=false'
+            sh 'kubectl apply -f k8s/service2-deployment.yaml --validate=false'
+            sh 'kubectl apply -f k8s/service2.yaml --validate=false'
+       }
+   }
+
+   stage('Verify Deployment') {
+       steps {
+           sh 'kubectl get pods -n $KUBE_NAMESPACE'
+           sh 'kubectl get svc -n $KUBE_NAMESPACE'
+       }
+   }
 
 
-
-
-
-
-                          stage('Deploy to Kubernetes') {
-
-                                 steps {
-                                     sh 'kubectl apply -f k8s/service1-deployment.yaml --validate=false'
-                                     sh 'kubectl apply -f k8s/service1.yaml --validate=false'
-                                      sh 'kubectl apply -f k8s/service2-deployment.yaml --validate=false'
-                                      sh 'kubectl apply -f k8s/service2.yaml --validate=false'
-                                 }
-                             }
-
-                             stage('Verify Deployment') {
-                                 steps {
-                                     sh 'kubectl get pods -n $KUBE_NAMESPACE'
-                                     sh 'kubectl get svc -n $KUBE_NAMESPACE'
-                                 }
-                             }
     }
 
 
@@ -67,7 +108,7 @@ pipeline {
     post {
         always {
             script {
-                sh "docker compose down"
+                sh "docker-compose down"
             }
         }
     }
