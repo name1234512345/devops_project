@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: service1
-          image: https://hub.docker.com/kateilievsk123/service1:latest
+          image: kateilievsk123/service1:latest
           ports:
             - containerPort: 9090
