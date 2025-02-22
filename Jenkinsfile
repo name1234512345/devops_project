@@ -8,7 +8,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'dockerhub'
         PROJECT_DIR = "${WORKSPACE}"
         KUBE_NAMESPACE = "default"
-        KUBECONFIG = credentials('kubeconfig')
+        KUBECONFIG = credentials('kubectl')
             DOCKER_HOST = sh(script: "minikube docker-env --shell=bash | grep DOCKER_HOST | cut -d '=' -f 2 | tr -d '\"'", returnStdout: true).trim()
             DOCKER_TLS_VERIFY = sh(script: "minikube docker-env --shell=bash | grep DOCKER_TLS_VERIFY | cut -d '=' -f 2 | tr -d '\"'", returnStdout: true).trim()
             DOCKER_CERT_PATH = sh(script: "minikube docker-env --shell=bash | grep DOCKER_CERT_PATH | cut -d '=' -f 2 | tr -d '\"'", returnStdout: true).trim()
