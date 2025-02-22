@@ -8,6 +8,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'dockerhub'
         PROJECT_DIR = "${WORKSPACE}"
         KUBECONFIG = credentials('kubernetes-secret')
+        KUBE_NAMESPACE = "default"
     }
 
     stages {
