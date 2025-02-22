@@ -21,7 +21,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh 'docker-compose build'
+                    sh 'docker compose build'
                 }
             }
         }
@@ -54,7 +54,7 @@ pipeline {
         stage('Deploy to docker  and Start Containers') {
             steps {
                 script {
-                    sh "docker-compose up -d"
+                    sh "docker compose up -d"
                 }
             }
         }
@@ -108,7 +108,7 @@ stage('Deploy to Kubernetes') {
     post {
         always {
             script {
-                sh "docker-compose down"
+                sh "docker compose down"
             }
         }
     }
