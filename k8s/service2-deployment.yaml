@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: service2
-          image: https://hub.docker.com/kateilievsk123/service2:latest
+          image: kateilievsk123/service2:latest
           ports:
             - containerPort: 9091
