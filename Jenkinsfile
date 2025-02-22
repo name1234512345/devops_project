@@ -8,6 +8,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'dockerhub'
         PROJECT_DIR = "${WORKSPACE}"
         KUBE_NAMESPACE = "default"
+        KUBECONFIG = credentials('kubeconfig')
             DOCKER_HOST = sh(script: "minikube docker-env --shell=bash | grep DOCKER_HOST | cut -d '=' -f 2 | tr -d '\"'", returnStdout: true).trim()
             DOCKER_TLS_VERIFY = sh(script: "minikube docker-env --shell=bash | grep DOCKER_TLS_VERIFY | cut -d '=' -f 2 | tr -d '\"'", returnStdout: true).trim()
             DOCKER_CERT_PATH = sh(script: "minikube docker-env --shell=bash | grep DOCKER_CERT_PATH | cut -d '=' -f 2 | tr -d '\"'", returnStdout: true).trim()
@@ -38,89 +39,13 @@ pipeline {
                 }
 
 
-        stage('Build Docker Images') {
-            steps {
-                script {
-                    sh 'docker compose build'
-                }
-            }
-        }
 
-
-        stage('Login to Docker Hub') {
-            steps {
-                script {
-                     withCredentials([string(credentialsId: DOCKER_CREDENTIALS_ID, variable: 'DOCKER_PASSWORD')]) {
-                                                      sh "echo $DOCKER_PASSWORD | docker login -u kateilievsk123 -p Mesledat3godini555!"
-                                                  }
-                }
-            }
-        }
-
-        stage('Tag and Push Docker Images') {
-            steps {
-                script {
-                    def services = ['service1', 'service2'] // List services from docker-compose.yml
-                    for (service in services) {
-                        sh """
-                        docker tag ${service}:latest ${DOCKERHUB_REPO}/${service}:${IMAGE_TAG}
-                        """
-                    }
-                }
-            }
-        }
-
-        stage('Deploy and Start Containers') {
-            steps {
-                script {
-                    sh "docker compose up -d"
-                }
-            }
-        }
-
-         stage('Check Container Logs') {
-                    steps {
-                        script {
-                            sh 'docker logs service1'
-                        }
-                    }
-                }
-
-          stage('Check Running Containers') {
-                    steps {
-                        script {
-                            sh 'docker ps'
-                        }
-                    }
-                }
 
 
 
 
                           stage('Deploy to Kubernetes') {
-                            agent {
-                                         kubernetes {
-                                             label 'jenkins-agent'  // This label should correspond to your Kubernetes agent label in Jenkins
-                                             defaultContainer 'jnlp'  // This is the default container that Jenkins uses to communicate with the master
-                                             yaml """
-                         apiVersion: v1
-                         kind: Pod
-                         metadata:
-                           labels:
-                             app: my-app
-                         spec:
-                           containers:
-                             - name: jnlp
-                               image: jenkins/inbound-agent:latest
-                               args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
-                             - name: kubectl
-                               image: bitnami/kubectl:latest
-                               command:
-                                 - cat
-                               tty: true
-                         """
-                                         }
-                                     }
+
                                  steps {
                                      sh 'kubectl apply -f k8s/service1-deployment.yaml --validate=false'
                                      sh 'kubectl apply -f k8s/service1.yaml --validate=false'
