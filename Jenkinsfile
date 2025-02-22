@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                      withCredentials([string(credentialsId: DOCKER_CREDENTIALS_ID, variable: 'DOCKER_PASSWORD')]) {
-                                                      sh "echo $DOCKER_PASSWORD | docker login -u kateilievsk123 -p ******************"
+                                                      sh "echo $DOCKER_PASSWORD | docker login -u kateilievsk123 -p Mesledat3godini555!"
                                                   }
                 }
             }
