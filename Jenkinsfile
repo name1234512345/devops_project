@@ -5,7 +5,7 @@ pipeline {
         DOCKERHUB_USERNAME = 'kateilievsk123'
         DOCKERHUB_REPO = 'kateilievsk123'
         IMAGE_TAG = 'latest'
-        DOCKER_CREDENTIALS_ID = 'docker_hub_secret_text'
+        DOCKER_CREDENTIALS_ID = 'dockerhub'
         PROJECT_DIR = "${WORKSPACE}"
         KUBECONFIG = credentials('kubernetes-secret')
     }
