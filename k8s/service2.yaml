@@ -6,7 +6,7 @@ spec:
   selector:
     app: service2
   ports:
-    - protocol: TCP
+    - name: http
       port: 80
       targetPort: 9091
   type: LoadBalancer

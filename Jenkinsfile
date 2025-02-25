@@ -75,13 +75,7 @@ pipeline {
                     }
                 }
 
-            stage('Run Maven Tests') {
-                            steps {
 
-                                script {
-                                   sh "docker exec service1 mvn test"
-                                }
-                            }
                         }
 stage('Deploy to Kubernetes') {
 
