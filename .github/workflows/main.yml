@@ -76,10 +76,10 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s/service1-deployment.yaml --validate=false --insecure-skip-tls-verify
-          kubectl apply -f k8s/service1.yaml --validate=false --insecure-skip-tls-verify
-          kubectl apply -f k8s/service2-deployment.yaml --validate=false --insecure-skip-tls-verify
-          kubectl apply -f k8s/service2.yaml --validate=false --insecure-skip-tls-verify
+          kubectl apply -f k8s/service1-deployment.yaml --validate=false --insecure-skip-tls-verify -n $KUBE_NAMESPACE
+          kubectl apply -f k8s/service1.yaml --validate=false --insecure-skip-tls-verify -n $KUBE_NAMESPACE
+          kubectl apply -f k8s/service2-deployment.yaml --validate=false --insecure-skip-tls-verify -n $KUBE_NAMESPACE
+          kubectl apply -f k8s/service2.yaml --validate=false --insecure-skip-tls-verify -n $KUBE_NAMESPACE
           
 
       - name: Verify Deployment
