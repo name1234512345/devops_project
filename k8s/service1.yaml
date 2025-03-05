@@ -8,7 +8,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 9090
+      targetPort: 9096
       name: http
   type: ClusterIP
 
