@@ -80,6 +80,7 @@ jobs:
           kubectl apply -f k8s/service1.yaml --validate=false
           kubectl apply -f k8s/service2-deployment.yaml --validate=false
           kubectl apply -f k8s/service2.yaml --validate=false
+          
 
       - name: Verify Deployment
         run: |
