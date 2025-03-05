@@ -68,11 +68,11 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
           export KUBECONFIG=$HOME/.kube/config
-          kubectl config view
+          kubectl config  --insecure-skip-tls-verify
       - name: Chw=eck kubernetes
         run: |
           export KUBECONFIG=$HOME/.kube/config
-          kubectl cluster-info
+          kubectl cluster-info --insecure-skip-tls-verify
 
       - name: Deploy to Kubernetes
         run: |
