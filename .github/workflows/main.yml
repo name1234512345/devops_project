@@ -12,7 +12,7 @@ env:
   DOCKERHUB_USERNAME: 'kateilievsk123'
   DOCKERHUB_REPO: 'kateilievsk123'
   IMAGE_TAG: 'latest'
-  KUBE_NAMESPACE: 'gitactions_test'
+  KUBE_NAMESPACE: 'default'
 
 jobs:
   build:
@@ -46,6 +46,9 @@ jobs:
       - name: Check Container Logs
         run: docker logs service1
 
+      - name: Run Maven Tests
+        run: docker exec service1 mvn test
+
       - name: Check Running Containers
         run: docker ps
 
@@ -60,10 +63,12 @@ jobs:
         uses: azure/setup-kubectl@v3
 
       - name: Configure Kubernetes Credentials
-        run: | 
+        run: |
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
+          export KUBECONFIG=$HOME/.kube/config
+          kubectl config view
 
       - name: Deploy to Kubernetes
         run: |
