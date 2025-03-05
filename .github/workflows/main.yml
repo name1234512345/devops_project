@@ -12,7 +12,7 @@ env:
   DOCKERHUB_USERNAME: 'kateilievsk123'
   DOCKERHUB_REPO: 'kateilievsk123'
   IMAGE_TAG: 'latest'
-  KUBE_NAMESPACE: 'default'
+  KUBE_NAMESPACE: 'cicd'
 
 jobs:
   build:
@@ -69,6 +69,10 @@ jobs:
           chmod 600 $HOME/.kube/config
           export KUBECONFIG=$HOME/.kube/config
           kubectl config view
+      - name: Chw=eck kubernetes
+        run: |
+          export KUBECONFIG=$HOME/.kube/config
+          kubectl cluster-info
 
       - name: Deploy to Kubernetes
         run: |
