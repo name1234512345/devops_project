@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: service1
-  namespace: default
+  namespace: cicd
 spec:
   replicas: 2
   selector:

@@ -45,6 +45,7 @@ pipeline {
                     for (service in services) {
                         sh """
                         docker tag ${service}:latest ${DOCKERHUB_REPO}/${service}:${IMAGE_TAG}
+                        docker push ${DOCKERHUB_REPO}/${service}:${IMAGE_TAG}
                         """
                     }
                 }
@@ -66,6 +67,14 @@ pipeline {
                         }
                     }
                 }
+            stage('Run Maven Tests') {
+                            steps {
+
+                                script {
+                                   sh "docker exec service1 mvn test"
+                                }
+                            }
+                        }
 
           stage('Check Running Containers') {
                     steps {
