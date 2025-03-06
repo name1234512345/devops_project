@@ -10,4 +10,5 @@ spec:
       port: 80
       targetPort: 9097
       name: http
-  type: ClusterIP
+  type: NodePort
+

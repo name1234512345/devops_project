@@ -17,4 +17,4 @@ spec:
         - name: service1
           image: kateilievsk123/service1:latest
           ports:
-            - containerPort: 9090
+            - containerPort: 9096
