@@ -12,7 +12,7 @@ env:
   DOCKERHUB_USERNAME: 'kateilievsk123'
   DOCKERHUB_REPO: 'kateilievsk123'
   IMAGE_TAG: 'latest'
-  KUBE_NAMESPACE: 'gitactions_test'
+  KUBE_NAMESPACE: 'cicd'
 
 jobs:
   build:
@@ -46,6 +46,9 @@ jobs:
       - name: Check Container Logs
         run: docker logs service1
 
+      - name: Run Maven Tests
+        run: docker exec service1 mvn test
+
       - name: Check Running Containers
         run: docker ps
 
@@ -60,19 +63,29 @@ jobs:
         uses: azure/setup-kubectl@v3
 
       - name: Configure Kubernetes Credentials
-        run: echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+          export KUBECONFIG=$HOME/.kube/config
+          kubectl config view
+      - name: Check kubernetes
+        run: |
+          export KUBECONFIG=$HOME/.kube/config
+          kubectl cluster-info --insecure-skip-tls-verify
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s/service1-deployment.yaml --validate=false
-          kubectl apply -f k8s/service1.yaml --validate=false
-          kubectl apply -f k8s/service2-deployment.yaml --validate=false
-          kubectl apply -f k8s/service2.yaml --validate=false
+          kubectl apply -f k8s/service1-deployment.yaml --validate=false --insecure-skip-tls-verify -n $KUBE_NAMESPACE
+          kubectl apply -f k8s/service1.yaml --validate=false --insecure-skip-tls-verify -n $KUBE_NAMESPACE
+          kubectl apply -f k8s/service2-deployment.yaml --validate=false --insecure-skip-tls-verify -n $KUBE_NAMESPACE
+          kubectl apply -f k8s/service2.yaml --validate=false --insecure-skip-tls-verify -n $KUBE_NAMESPACE
+          
 
       - name: Verify Deployment
         run: |
-          kubectl get pods -n $KUBE_NAMESPACE
-          kubectl get svc -n $KUBE_NAMESPACE
+          kubectl get pods -n $KUBE_NAMESPACE --insecure-skip-tls-verify
+          kubectl get svc -n $KUBE_NAMESPACE --insecure-skip-tls-verify
 
   cleanup:
     runs-on: ubuntu-latest
