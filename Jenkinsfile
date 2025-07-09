@@ -1,6 +1,7 @@
 pipeline {
     agent any
 
+
     environment {
         DOCKERHUB_USERNAME = 'kateilievsk123'
         DOCKERHUB_REPO = 'kateilievsk123'
