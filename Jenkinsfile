@@ -95,6 +95,8 @@ stage('Deploy to Kubernetes') {
        }
    }
 
+
+
    stage('Verify Deployment') {
        steps {
            sh 'kubectl get pods -n $KUBE_NAMESPACE'
